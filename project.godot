@@ -34,6 +34,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/input/InputReader.gd"
 }, {
+"base": "Node",
+"class": "MusicBeat",
+"language": "GDScript",
+"path": "res://scenes/music/MusicBeat.gd"
+}, {
+"base": "AudioStreamPlayer",
+"class": "MusicPlayer",
+"language": "GDScript",
+"path": "res://scenes/music/MusicPlayer.gd"
+}, {
 "base": "Focusable",
 "class": "PlayerFocus",
 "language": "GDScript",
@@ -60,6 +70,8 @@ _global_script_class_icons={
 "Health": "",
 "HurtBox": "",
 "InputReader": "",
+"MusicBeat": "",
+"MusicPlayer": "",
 "PlayerFocus": "",
 "PlayerInput": "",
 "SceneTest": "",
@@ -80,7 +92,7 @@ Display=8
 
 [application]
 
-config/name="godot-template"
+config/name="snake-beat"
 run/main_scene="res://scenes/Game.tscn"
 config/icon="res://icon.png"
 

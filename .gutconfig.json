@@ -1,5 +1,5 @@
 {
-  "dirs": ["res://tests/unit/", "res://tests/integration/", "res://tests/e2e"],
+  "dirs": ["res://tests/unit/"],
   "double_strategy": "partial",
   "ignore_pause": false,
   "include_subdirs": true,

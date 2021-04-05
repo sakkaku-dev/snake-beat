@@ -89,6 +89,7 @@ func get_grid_move_position(grid_pos: Vector2, dir: Vector2) -> Vector2:
 	
 	return new_pos
 
+
 func get_grid_center() -> Vector3:
 	var last_pos = get_last_position()
 	last_pos.z += ground_size / 2

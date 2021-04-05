@@ -16,7 +16,7 @@ func before_each():
 	music_beat.audio_player = music
 
 
-func test_test():
+func test_music_beat():
 	var verified_count = 0
 	for i in range(0, beats_per_loop * 10):
 		stub(music, 'get_song_position').to_return(i / 10)

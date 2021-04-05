@@ -35,8 +35,7 @@ var loopPositionInBeats
 
 
 func _ready():
-	pass
-	#audio_player.play()
+	audio_player.play()
 
 func _process(delta):
 	# calculate the position in seconds

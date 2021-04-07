@@ -1,5 +1,7 @@
 extends GridMap
 
+class_name IsometricMap
+
 export var ground: PackedScene
 export var ground_size = 1.0
 export var grid_size = Vector2(5, 5)
@@ -10,25 +12,37 @@ var grid = []
 func _ready():
 	var block = mesh_library.find_item_by_name("block")
 	
-	
 	var start_position = Vector2(0, 0)
 	var position = start_position
-#	grid = []
+	grid = []
 	for z in range(0, grid_size.y):
-#		var line = []
+		var line = []
 		
 		for x in range(0, grid_size.x):
-#			line.append(null)
-			set_cell_item(start_position.x, 0, start_position.y, block)
-#			var ground_instance: Spatial = ground.instance()
-#			add_child(ground_instance)
-#			ground_instance.transform.origin = Vector3(position.x, 0, position.y)
-			
+			line.append(0)
+			set_cell_item(position.x, 0, position.y, block)
 			position.x += 1
 			
 		position.y += 1
 		position.x = 0
-#		grid.append(line)
+		grid.append(line)
+
+
+func add_to_grid(instance: Spatial, grid_pos: Vector2) -> bool:
+	if is_grid_position_occupied(grid_pos):
+		print("On grid position is already an object")
+		return false
+	
+	var pos = get_position_on_grid(grid_pos)
+	pos.y += ground_size
+
+	if instance.has_method("set_grid"):
+		instance.set_grid(self)
+
+	add_child(instance)
+	instance.global_transform.origin = pos
+	set_grid_value(grid_pos, 1)
+	return true
 
 
 func is_grid_position_occupied(grid_pos: Vector2) -> bool:
@@ -37,57 +51,43 @@ func is_grid_position_occupied(grid_pos: Vector2) -> bool:
 
 func get_grid_value(grid_pos: Vector2) -> int:
 	if is_inside_grid(grid_pos):
-		return grid[grid_pos[0]][grid_pos[1]]
+		return grid[grid_pos.y][grid_pos.x]
 	return -1
 
 
 func set_grid_value(grid_pos: Vector2, value: int) -> void:
 	if is_inside_grid(grid_pos):
-		grid[grid_pos[0]][grid_pos[1]] = value
+		grid[grid_pos.y][grid_pos.x] = value
 
 
 func is_inside_grid(grid_pos: Vector2) -> bool:
 	return grid_pos.y >= 0 and grid_pos.y < grid.size() and \
 		grid_pos.x >= 0 and grid_pos.x < grid[0].size()
 
-# get global position based on grid position index
-func get_position_on_grid(pos: Vector2) -> Vector3:
-	if pos.y >= grid_size.y or pos.x >= grid_size.x:
-		return Vector3.ZERO
-	
-	var idx = pos.y * grid_size.y
-	idx += pos.x
-	
-	if idx >= get_child_count():
-		return Vector3.ZERO
-	
-	var position = get_child(idx).global_transform.origin
-	position.y += ground_size / 2
-	return position
+
+# get global position of the ground surface based on grid position index
+func get_position_on_grid(grid_pos: Vector2) -> Vector3:
+	return map_to_world(grid_pos.x, 0, grid_pos.y)
+
 
 # get grid position based on global position
 func get_grid_position(global_pos: Vector3) -> Vector2:
-	if global_pos.x < 0 or global_pos.z < 0:
-		return Vector2.ZERO
-	
-	var row = floor(global_pos.z / ground_size)
-	var col = floor(global_pos.x / ground_size)
-	var grid_pos = Vector2(col, row)
-	
-	if is_inside_grid(grid_pos):
-		return grid_pos
-	return Vector2.ZERO
+	var grid_pos = world_to_map(global_pos)
+	return Vector2(grid_pos.x, grid_pos.z)
 
 
-func get_grid_move_position(grid_pos: Vector2, dir: Vector2) -> Vector2:
-	var new_pos = grid_pos + dir.normalized()
-	if not is_inside_grid(new_pos):
-		return grid_pos
+func update_grid_position(pos: Vector3, dir: Vector2) -> Vector3:
+	var grid_pos = get_grid_position(pos)
+	var new_grid_pos = grid_pos + dir
+	if not is_inside_grid(new_grid_pos):
+		return get_position_on_grid(grid_pos)
 	
-	if is_grid_position_occupied(new_pos):
-		return grid_pos
+	if is_grid_position_occupied(new_grid_pos):
+		return get_position_on_grid(grid_pos)
 	
-	return new_pos
+	set_grid_value(grid_pos, 0)
+	set_grid_value(new_grid_pos, 1)
+	return get_position_on_grid(new_grid_pos)
 
 
 func get_grid_center() -> Vector3:
@@ -98,10 +98,8 @@ func get_grid_center() -> Vector3:
 
 
 func get_last_position() -> Vector3:
-	var last_grid_child: Spatial = get_child(get_child_count() - 1)
-	return last_grid_child.global_transform.origin
+	return map_to_world(grid_size.x, 0, grid_size.y)
 
 
 func get_first_position() -> Vector3:
-	var first_grid_child: Spatial = get_child(0)
-	return first_grid_child.global_transform.origin
+	return map_to_world(0, 0, 0)

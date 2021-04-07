@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/music/MusicBeat.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Test.gd" type="Script" id=2]
 [ext_resource path="res://scenes/World.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scripts/input/PlayerInput.gd" type="Script" id=4]
 
 [node name="Game" type="Spatial"]
 
@@ -18,13 +17,4 @@ __meta__ = {
 }
 
 [node name="World" parent="." instance=ExtResource( 3 )]
-player_input_path = NodePath("../PlayerInput")
-
-[node name="PlayerInput" type="Node" parent="."]
-script = ExtResource( 4 )
-
-[node name="Timer" type="Timer" parent="PlayerInput"]
-wait_time = 0.5
-one_shot = true
-[connection signal="beat" from="MusicBeat" to="PlayerInput" method="_on_MusicBeat_beat"]
-[connection signal="timeout" from="PlayerInput/Timer" to="PlayerInput" method="_on_Timer_timeout"]
+[connection signal="beat" from="MusicBeat" to="World" method="_on_MusicBeat_beat"]

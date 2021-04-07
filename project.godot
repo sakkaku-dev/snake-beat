@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/input/InputReader.gd"
 }, {
+"base": "GridMap",
+"class": "IsometricMap",
+"language": "GDScript",
+"path": "res://scenes/world/Grid.gd"
+}, {
 "base": "Node",
 "class": "MusicBeat",
 "language": "GDScript",
@@ -70,6 +75,7 @@ _global_script_class_icons={
 "Health": "",
 "HurtBox": "",
 "InputReader": "",
+"IsometricMap": "",
 "MusicBeat": "",
 "MusicPlayer": "",
 "PlayerFocus": "",

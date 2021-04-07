@@ -13,6 +13,12 @@ var inputs = []
 var action_strength = {}
 
 
+func reset_inputs():
+	inputs = []
+	just_pressed = []
+	action_strength = {}
+
+
 func handle_input(event: InputEvent) -> bool:
 	_update_action_strength(event)
 

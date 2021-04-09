@@ -2,18 +2,18 @@
 
 [ext_resource path="res://scenes/World.gd" type="Script" id=1]
 [ext_resource path="res://scenes/world/Grid.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/ground/Ground.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/apple/Apple.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/snake/Snake.tscn" type="PackedScene" id=4]
 
 [node name="World" type="Spatial"]
 script = ExtResource( 1 )
 snake_scene = ExtResource( 4 )
+apple_scene = ExtResource( 3 )
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
 data = {
 "cells": PoolIntArray(  )
 }
-ground = ExtResource( 3 )
 ground_size = 1.25
 
 [node name="Camera" type="Camera" parent="."]

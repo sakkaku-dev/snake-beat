@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://scenes/world/Grid.gd"
 }, {
 "base": "Node",
+"class": "MoveState",
+"language": "GDScript",
+"path": "res://scenes/snake/MoveState.gd"
+}, {
+"base": "Node",
 "class": "MusicBeat",
 "language": "GDScript",
 "path": "res://scenes/music/MusicBeat.gd"
@@ -64,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://tests/SceneTest.gd"
 }, {
+"base": "KinematicBody",
+"class": "Snake",
+"language": "GDScript",
+"path": "res://scenes/snake/Snake.gd"
+}, {
 "base": "Node",
 "class": "UnitTest",
 "language": "GDScript",
@@ -76,11 +86,13 @@ _global_script_class_icons={
 "HurtBox": "",
 "InputReader": "",
 "IsometricMap": "",
+"MoveState": "",
 "MusicBeat": "",
 "MusicPlayer": "",
 "PlayerFocus": "",
 "PlayerInput": "",
 "SceneTest": "",
+"Snake": "",
 "UnitTest": ""
 }
 
@@ -134,8 +146,11 @@ move_down={
 [layer_names]
 
 2d_physics/layer_1="objects"
+3d_physics/layer_1="objects"
 2d_physics/layer_2="player"
+3d_physics/layer_2="player"
 2d_physics/layer_3="enemy"
+3d_physics/layer_3="pickable"
 2d_physics/layer_4="player_hurtbox"
 2d_physics/layer_5="enemy_hurtbox"
 

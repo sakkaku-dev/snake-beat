@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/snake/Snake.gd" type="Script" id=1]
 [ext_resource path="res://scripts/input/PlayerInput.gd" type="Script" id=2]
+[ext_resource path="res://scenes/snake/SnakeBody.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/snake/MoveState.gd" type="Script" id=4]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 0.5, 0.5, 0.5 )
@@ -14,6 +16,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
 collision_layer = 2
 collision_mask = 2147483649
 script = ExtResource( 1 )
+snake_body = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 layers = 2
@@ -27,6 +30,11 @@ shape = SubResource( 2 )
 script = ExtResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.2
 one_shot = true
+
+[node name="MoveState" type="Node" parent="."]
+script = ExtResource( 4 )
+body_path = NodePath("..")
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

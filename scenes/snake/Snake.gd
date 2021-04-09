@@ -1,11 +1,14 @@
 extends KinematicBody
 
-export var speed = 10
-export var accel = 1000
-export var target_distance = 0.1
+class_name Snake
+
+signal moving(old_pos, new_pos)
+
+export var snake_body: PackedScene
 
 onready var input := $PlayerInput
 onready var timer := $Timer
+onready var move := $MoveState
 
 var target_position = Vector3.ZERO
 var velocity = Vector3.ZERO
@@ -14,33 +17,41 @@ var grid: IsometricMap
 var is_moving = false
 var beat = false
 
+var linked_body
+
+func _ready():
+	move.connect("reached_destination", self, "_reached_destination")
+
+
+func _reached_destination():
+	is_moving = false
+
+
 func set_grid(g: IsometricMap) -> void:
 	grid = g
 
 
-func reached_target_position() -> bool:
-	var dir = target_position - global_transform.origin
-	return dir.length() <= target_distance
+func grow():
+	if linked_body:
+		linked_body.grow(snake_body)
+	else:
+		var body = snake_body.instance()
+		body.linked_move = move
+		linked_body = body
 
-func _physics_process(delta):
-	if is_moving:
-		var dir = target_position - global_transform.origin
-		dir = dir.normalized()
-		
-		velocity = velocity.move_toward(dir * speed, accel * delta)
-		velocity = move_and_slide(velocity, Vector3.UP)
-		
-		if reached_target_position():
-			is_moving = false
-			global_transform.origin = target_position
-	elif beat:
+		var pos = grid.get_grid_position(move.last_position)
+		grid.add_to_grid(body, pos)
+
+
+func _physics_process(_delta):
+	if not is_moving and beat:
 		var motion = input.get_motion()
-		target_position = grid.update_grid_position(global_transform.origin, motion)
-		target_position.y = global_transform.origin.y
+		var target_position = grid.update_grid_position(global_transform.origin, motion)
 		
-		if not reached_target_position():
+		if move.target_position != target_position:
 			is_moving = true
 			beat = false
+			move.target_position = target_position
 
 func on_beat():
 	beat = true

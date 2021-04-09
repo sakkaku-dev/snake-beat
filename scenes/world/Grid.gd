@@ -2,7 +2,6 @@ extends GridMap
 
 class_name IsometricMap
 
-export var ground: PackedScene
 export var ground_size = 1.0
 export var grid_size = Vector2(5, 5)
 
@@ -28,7 +27,27 @@ func _ready():
 		grid.append(line)
 
 
-func add_to_grid(instance: Spatial, grid_pos: Vector2) -> bool:
+func get_all_free_positions() -> Array:
+	var free_pos = []
+	for y in range(0, grid_size.y):
+		for x in range(0, grid_size.x):
+			var pos = Vector2(x, y)
+			if not is_grid_position_occupied(pos):
+				free_pos.append(pos)
+	return free_pos
+
+
+func get_random_free_position():
+	var free_pos = get_all_free_positions()
+	
+	if free_pos.size() == 0:
+		return null
+	
+	var idx = randi() % free_pos.size()
+	return free_pos[idx]
+
+
+func add_to_grid(instance: Spatial, grid_pos: Vector2, block = true) -> bool:
 	if is_grid_position_occupied(grid_pos):
 		print("On grid position is already an object")
 		return false
@@ -41,7 +60,10 @@ func add_to_grid(instance: Spatial, grid_pos: Vector2) -> bool:
 
 	add_child(instance)
 	instance.global_transform.origin = pos
-	set_grid_value(grid_pos, 1)
+	
+	if block:
+		set_grid_value(grid_pos, 1)
+
 	return true
 
 
@@ -79,15 +101,16 @@ func get_grid_position(global_pos: Vector3) -> Vector2:
 func update_grid_position(pos: Vector3, dir: Vector2) -> Vector3:
 	var grid_pos = get_grid_position(pos)
 	var new_grid_pos = grid_pos + dir
-	if not is_inside_grid(new_grid_pos):
-		return get_position_on_grid(grid_pos)
 	
-	if is_grid_position_occupied(new_grid_pos):
-		return get_position_on_grid(grid_pos)
+	var result = get_position_on_grid(grid_pos)
 	
-	set_grid_value(grid_pos, 0)
-	set_grid_value(new_grid_pos, 1)
-	return get_position_on_grid(new_grid_pos)
+	if is_inside_grid(new_grid_pos) and not is_grid_position_occupied(new_grid_pos):
+		set_grid_value(grid_pos, 0)
+		set_grid_value(new_grid_pos, 1)
+		result = get_position_on_grid(new_grid_pos)
+	
+	result.y += ground_size
+	return result
 
 
 func get_grid_center() -> Vector3:

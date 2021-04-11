@@ -2,7 +2,8 @@ extends KinematicBody
 
 class_name Snake
 
-signal moving(old_pos, new_pos)
+signal beat_hit
+signal beat_missed
 
 export var snake_body: PackedScene
 
@@ -52,6 +53,11 @@ func _physics_process(_delta):
 			is_moving = true
 			beat = false
 			move.target_position = target_position
+			emit_signal("beat_hit")
+			input.reset_inputs()
+	elif not beat and input.get_motion().length() > 0.01:
+		emit_signal("beat_missed")
+		input.reset_inputs()
 
 func on_beat():
 	beat = true

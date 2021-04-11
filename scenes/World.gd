@@ -5,6 +5,7 @@ export var apple_scene: PackedScene
 
 onready var camera := $Camera
 onready var grid := $Grid
+onready var beat_indicator := $CanvasLayer/BeatIndicator
 
 var snake
 
@@ -18,6 +19,8 @@ func _ready():
 func spawn_snake():
 	snake = snake_scene.instance()
 	grid.add_to_grid(snake, Vector2.ZERO)
+	snake.connect("beat_hit", beat_indicator, "hit_beat")
+	snake.connect("beat_missed", beat_indicator, "miss_beat")
 
 
 func spawn_apple():

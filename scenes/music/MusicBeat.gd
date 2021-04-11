@@ -46,9 +46,9 @@ func _process(delta):
 	
 	if (songPosInBeats >= (completedLoops + 1) * beatsPerLoop):
 		completedLoops += 1
-	loopPositionInBeats = floor(songPosInBeats - completedLoops * beatsPerLoop)
+	loopPositionInBeats = songPosInBeats - completedLoops * beatsPerLoop
 	
-	if prevBeat != loopPositionInBeats:
+	if prevBeat != floor(loopPositionInBeats):
 		emit_signal("beat")
-		prevBeat = loopPositionInBeats
+		prevBeat = floor(loopPositionInBeats)
 

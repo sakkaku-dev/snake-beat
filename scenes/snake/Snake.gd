@@ -53,6 +53,10 @@ func _physics_process(_delta):
 			is_moving = true
 			beat = false
 			move.target_position = target_position
+			
+			look_at(target_position, Vector3.UP)
+			rotate_y(deg2rad(180)) # Setting rotation on object seems to get overwritten
+			
 			emit_signal("beat_hit")
 			input.reset_inputs()
 	elif not beat and input.get_motion().length() > 0.01:

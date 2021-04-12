@@ -39,13 +39,11 @@ func get_all_free_positions() -> Array:
 
 func get_random_free_position():
 	var free_pos = get_all_free_positions()
-	print(free_pos)
 	
 	if free_pos.size() == 0:
 		return null
 	
 	var idx = randi() % free_pos.size()
-	print(str(idx) + ", " + str(free_pos.size()) + ", " + str(free_pos[idx]))
 	return free_pos[idx]
 
 

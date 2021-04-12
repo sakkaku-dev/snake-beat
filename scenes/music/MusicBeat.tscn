@@ -6,6 +6,8 @@
 
 [node name="MusicBeat" type="Node"]
 script = ExtResource( 2 )
+bpm = 120.0
+beatsPerLoop = 32
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )

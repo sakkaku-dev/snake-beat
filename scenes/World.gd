@@ -27,7 +27,7 @@ func spawn_apple():
 	var apple = apple_scene.instance()
 	var pos = grid.get_random_free_position()
 	
-	if pos:
+	if pos != null:
 		grid.add_to_grid(apple, pos, false)
 		apple.connect("eaten", self, "spawn_apple")
 

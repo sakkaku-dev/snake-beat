@@ -22,7 +22,7 @@ var songPosition;
 var songPosInBeats;
 
 # the duration of a beat
-var secPerBeat = 60 / bpm;
+var secPerBeat;
 
 # how much time (in seconds) has passed since the song started
 var dsptimesong;
@@ -36,6 +36,7 @@ var loopPositionInBeats
 
 func _ready():
 	audio_player.play()
+	secPerBeat = 60 / bpm
 
 func _process(delta):
 	# calculate the position in seconds

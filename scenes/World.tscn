@@ -29,5 +29,6 @@ size = 12.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BeatIndicator" parent="CanvasLayer" instance=ExtResource( 5 )]
+distance_per_sec = 300
 music_beat_path = NodePath("../../MusicBeat")
 [connection signal="beat" from="MusicBeat" to="." method="_on_MusicBeat_beat"]

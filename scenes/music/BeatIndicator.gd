@@ -12,9 +12,6 @@ onready var beat_circle = $AnimationPlayer
 
 var beat_scene = preload("res://scenes/music/Beat.tscn")
 
-func _ready():
-	music_beat.connect("beat", self, "add_beat")
-
 func add_beat() -> void:
 	var beat = beat_scene.instance()
 	var x_pos = distance_per_sec * music_beat.secPerBeat
@@ -36,3 +33,7 @@ func miss_beat():
 	print("Miss")
 	beat_circle.play("Miss")
 
+
+
+func _on_Delay_timeout():
+	music_beat.connect("beat", self, "add_beat")

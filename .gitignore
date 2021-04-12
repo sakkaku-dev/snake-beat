@@ -3,5 +3,5 @@ script_templates/
 tests/results
 *.import
 .import
-
+*.blend1
 build/

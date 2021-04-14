@@ -2,6 +2,8 @@ extends GridMap
 
 class_name IsometricMap
 
+signal moving_into_occupied
+
 export var ground_size = 1.0
 export var grid_size = Vector2(5, 5)
 
@@ -9,6 +11,11 @@ export var grid_size = Vector2(5, 5)
 var grid = []
 
 func _ready():
+	reset()
+
+func reset():
+	clear()
+	
 	var block = mesh_library.find_item_by_name("block")
 	
 	var start_position = Vector2(0, 0)
@@ -59,7 +66,11 @@ func add_to_grid(instance: Spatial, grid_pos: Vector2, block = true) -> bool:
 		instance.set_grid(self)
 
 	add_child(instance)
-	instance.global_transform.origin = pos
+	
+	if instance.has_method("set_initial_pos"):
+		instance.set_initial_pos(pos)
+	else:
+		instance.global_transform.origin = pos
 	
 	if block:
 		set_grid_value(grid_pos, 1)
@@ -98,13 +109,16 @@ func get_grid_position(global_pos: Vector3) -> Vector2:
 	return Vector2(grid_pos.x, grid_pos.z)
 
 
-func update_grid_position(pos: Vector3, dir: Vector2) -> Vector3:
+func update_grid_position(pos: Vector3, dir: Vector2):
 	var grid_pos = get_grid_position(pos)
 	var new_grid_pos = grid_pos + dir
 	
 	var result = get_position_on_grid(grid_pos)
 	
-	if is_inside_grid(new_grid_pos) and not is_grid_position_occupied(new_grid_pos):
+	if not is_inside_grid(new_grid_pos):
+		return null
+	
+	if not is_grid_position_occupied(new_grid_pos):
 		set_grid_value(grid_pos, 0)
 		set_grid_value(new_grid_pos, 1)
 		result = get_position_on_grid(new_grid_pos)

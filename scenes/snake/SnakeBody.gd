@@ -12,6 +12,12 @@ func _ready():
 	move.target_position = linked_move.last_position
 
 
+func delete():
+	if linked_body:
+		linked_body.delete()
+	queue_free()
+
+
 func grow(body_scene: PackedScene):
 	if linked_body:
 		linked_body.grow(body_scene)
@@ -32,4 +38,5 @@ func set_destination(old_pos: Vector3, new_pos: Vector3):
 	var dir = old_pos - global_transform.origin
 	var motion = Vector2(dir.x, dir.z).normalized() 
 	var target_position = grid.update_grid_position(global_transform.origin, motion)
-	move.target_position = target_position
+	if target_position != null:
+		move.target_position = target_position

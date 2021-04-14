@@ -9,25 +9,47 @@ export var apple_scene: PackedScene
 onready var camera := $Camera
 onready var grid := $Grid
 onready var beat_indicator := $CanvasLayer/BeatIndicator
+onready var music_beat := $MusicBeat
+onready var game_over_sound := $GameOver
+onready var game_over_screen := $CanvasLayer/GameOver
+onready var score_screen := $CanvasLayer/ScoreContainer
 
+var apple
 var snake
+var game_over = false
 
 func _ready():
-	position_camera()
+	reset()
 
+func reset():
+	if snake:
+		snake.delete()
+	
+	if apple:
+		apple.queue_free()
+	
+	game_over = false
+	game_over_screen.hide()
+	
+	score_screen.reset()
+	music_beat.play()
+	grid.reset()
+	
+	position_camera()
 	spawn_snake()
 	spawn_apple()
-	
+
 
 func spawn_snake():
 	snake = snake_scene.instance()
 	grid.add_to_grid(snake, Vector2.ZERO)
 	snake.connect("beat_hit", beat_indicator, "hit_beat")
 	snake.connect("beat_missed", self, "beat_missed")
+	snake.connect("died", self, "game_over")
 
 
 func spawn_apple():
-	var apple = apple_scene.instance()
+	apple = apple_scene.instance()
 	var pos = grid.get_random_free_position()
 	
 	if pos != null:
@@ -57,5 +79,21 @@ func position_camera():
 	camera.global_transform.origin = center + dir
 	camera.look_at(center, Vector3.UP)
 
+
+func _unhandled_input(event):
+	if game_over:
+		if event.is_action_pressed("ui_accept"):
+			reset()
+		elif event.is_action_pressed("ui_cancel"):
+			pass
+
+
 func _on_MusicBeat_beat():
 	snake.on_beat()
+
+
+func game_over():
+	music_beat.stop()
+	game_over_sound.play()
+	game_over_screen.show()
+	game_over = true

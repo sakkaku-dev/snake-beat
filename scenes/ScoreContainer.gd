@@ -8,8 +8,13 @@ var score = 0 setget set_score
 var multiplier = 1 setget set_multiplier
 
 func _ready():
+	reset()
+
+
+func reset():
 	self.score = 0
 	self.multiplier = 1
+
 
 func set_multiplier(value):
 	if multiplier == value: return

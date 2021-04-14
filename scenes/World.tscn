@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/World.gd" type="Script" id=1]
 [ext_resource path="res://scenes/world/Grid.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/theme.tres" type="Theme" id=7]
 [ext_resource path="res://scenes/ScoreContainer.gd" type="Script" id=8]
 [ext_resource path="res://assets/Fonts/Kenney Mini Square.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://assets/game_over.wav" type="AudioStream" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -18,6 +19,9 @@ font_data = ExtResource( 9 )
 script = ExtResource( 1 )
 snake_scene = ExtResource( 4 )
 apple_scene = ExtResource( 3 )
+
+[node name="GameOver" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
 
 [node name="MusicBeat" parent="." instance=ExtResource( 6 )]
 
@@ -36,7 +40,6 @@ size = 12.0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="BeatIndicator" parent="CanvasLayer" instance=ExtResource( 5 )]
-distance_per_sec = 300
 music_beat_path = NodePath("../../MusicBeat")
 
 [node name="ScoreContainer" type="CenterContainer" parent="CanvasLayer"]
@@ -77,6 +80,22 @@ margin_right = 21.0
 margin_bottom = 45.0
 custom_fonts/font = SubResource( 1 )
 text = "1x"
+
+[node name="GameOver" type="CenterContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOver"]
+margin_left = 319.0
+margin_top = 281.0
+margin_right = 704.0
+margin_bottom = 319.0
+text = "Press 'enter' to restart"
 [connection signal="apple_eaten" from="." to="CanvasLayer/ScoreContainer" method="increase_score"]
 [connection signal="beat_missed" from="." to="CanvasLayer/ScoreContainer" method="lose_combo"]
 [connection signal="beat" from="MusicBeat" to="." method="_on_MusicBeat_beat"]
+[connection signal="moving_into_occupied" from="Grid" to="." method="game_over"]

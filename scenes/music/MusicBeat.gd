@@ -35,10 +35,11 @@ var loopPositionInBeats
 
 
 func _ready():
-	audio_player.play()
 	secPerBeat = 60 / bpm
 
 func _process(delta):
+	if not audio_player.playing: return
+	
 	# calculate the position in seconds
 	songPosition = audio_player.get_song_position()
 	
@@ -53,3 +54,8 @@ func _process(delta):
 		emit_signal("beat")
 		prevBeat = floor(loopPositionInBeats)
 
+func stop():
+	audio_player.stop()
+
+func play():
+	audio_player.play()

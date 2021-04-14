@@ -8,3 +8,7 @@ func toggle():
 	else:
 		self_modulate = Color.red
 	toggled = !toggled
+
+
+func increase_score():
+	pass # Replace with function body.

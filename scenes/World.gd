@@ -1,5 +1,8 @@
 extends Spatial
 
+signal apple_eaten
+signal beat_missed
+
 export var snake_scene: PackedScene
 export var apple_scene: PackedScene
 
@@ -20,7 +23,7 @@ func spawn_snake():
 	snake = snake_scene.instance()
 	grid.add_to_grid(snake, Vector2.ZERO)
 	snake.connect("beat_hit", beat_indicator, "hit_beat")
-	snake.connect("beat_missed", beat_indicator, "miss_beat")
+	snake.connect("beat_missed", self, "beat_missed")
 
 
 func spawn_apple():
@@ -29,7 +32,17 @@ func spawn_apple():
 	
 	if pos != null:
 		grid.add_to_grid(apple, pos, false)
-		apple.connect("eaten", self, "spawn_apple")
+		apple.connect("eaten", self, "apple_eaten")
+
+
+func apple_eaten():
+	emit_signal("apple_eaten")
+	spawn_apple()
+
+
+func beat_missed():
+	emit_signal("beat_missed")
+	beat_indicator.miss_beat()
 
 
 func position_camera():

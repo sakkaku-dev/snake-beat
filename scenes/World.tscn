@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/World.gd" type="Script" id=1]
 [ext_resource path="res://scenes/world/Grid.tscn" type="PackedScene" id=2]
@@ -6,6 +6,13 @@
 [ext_resource path="res://scenes/snake/Snake.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/music/BeatIndicator.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/music/MusicBeat.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/theme.tres" type="Theme" id=7]
+[ext_resource path="res://scenes/ScoreContainer.gd" type="Script" id=8]
+[ext_resource path="res://assets/Fonts/Kenney Mini Square.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+font_data = ExtResource( 9 )
 
 [node name="World" type="Spatial"]
 script = ExtResource( 1 )
@@ -31,4 +38,45 @@ size = 12.0
 [node name="BeatIndicator" parent="CanvasLayer" instance=ExtResource( 5 )]
 distance_per_sec = 300
 music_beat_path = NodePath("../../MusicBeat")
+
+[node name="ScoreContainer" type="CenterContainer" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_bottom = 38.0
+rect_pivot_offset = Vector2( 512, 0 )
+theme = ExtResource( 7 )
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/ScoreContainer"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScoreContainer"]
+margin_left = 446.0
+margin_right = 578.0
+margin_bottom = 45.0
+
+[node name="Score" type="Label" parent="CanvasLayer/ScoreContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 107.0
+margin_bottom = 41.0
+text = "100000"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ScoreContainer/HBoxContainer"]
+margin_left = 111.0
+margin_right = 132.0
+margin_bottom = 45.0
+custom_constants/margin_top = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Multiplier" type="Label" parent="CanvasLayer/ScoreContainer/HBoxContainer/MarginContainer"]
+margin_top = 20.0
+margin_right = 21.0
+margin_bottom = 45.0
+custom_fonts/font = SubResource( 1 )
+text = "1x"
+[connection signal="apple_eaten" from="." to="CanvasLayer/ScoreContainer" method="increase_score"]
+[connection signal="beat_missed" from="." to="CanvasLayer/ScoreContainer" method="lose_combo"]
 [connection signal="beat" from="MusicBeat" to="." method="_on_MusicBeat_beat"]

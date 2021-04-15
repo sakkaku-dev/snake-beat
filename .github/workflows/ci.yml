@@ -92,7 +92,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
         with:
-          lfs: true
+          GIT_LFS_SKIP_SMUDGE: 1
       - name: Download export-web artifact
         uses: actions/download-artifact@v2
         with:

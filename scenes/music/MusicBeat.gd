@@ -33,12 +33,13 @@ var completedLoops = 0;
 # The current position of the song within the loop in beats.
 var loopPositionInBeats
 
+var game_start = false
 
 func _ready():
 	secPerBeat = 60 / bpm
 
 func _process(delta):
-	if not audio_player.is_playing(): return
+	if not audio_player.is_playing() or not game_start: return
 	
 	# calculate the position in seconds
 	songPosition = audio_player.get_song_position()
@@ -56,6 +57,8 @@ func _process(delta):
 
 func stop():
 	audio_player.stop()
+	game_start = false
 
 func play():
 	audio_player.play()
+	game_start = true

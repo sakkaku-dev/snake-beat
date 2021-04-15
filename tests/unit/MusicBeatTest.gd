@@ -15,6 +15,7 @@ func before_each():
 	music = double(MusicPlayer).new()
 	add_child(music_beat)
 	music_beat.audio_player = music
+	music_beat.game_start = true
 	stub(music, "is_playing").to_return(true)
 
 

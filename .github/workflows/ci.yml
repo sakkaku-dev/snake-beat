@@ -91,6 +91,8 @@ jobs:
       # Checkout step needed for deploying
       - name: Checkout
         uses: actions/checkout@v1
+        with:
+          lfs: true
       - name: Download export-web artifact
         uses: actions/download-artifact@v2
         with:

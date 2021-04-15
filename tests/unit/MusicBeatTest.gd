@@ -13,7 +13,9 @@ func before_each():
 	watch_signals(music_beat)
 	
 	music = double(MusicPlayer).new()
+	add_child(music_beat)
 	music_beat.audio_player = music
+	stub(music, "is_playing").to_return(true)
 
 
 func test_music_beat():

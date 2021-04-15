@@ -18,3 +18,6 @@ func _ready():
 
 func get_song_position():
 	return get_playback_position() + AudioServer.get_time_since_last_mix() - AudioServer.get_output_latency()
+
+func is_playing():
+	return playing

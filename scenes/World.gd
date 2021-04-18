@@ -90,6 +90,7 @@ func position_camera():
 func open_scoreboard():
 	game_over_screen.hide()
 	score_board.show()
+	menu.hide()
 
 
 func open_menu():

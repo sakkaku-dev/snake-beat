@@ -124,7 +124,6 @@ margin_bottom = 172.0
 text = "Scoreboard"
 
 [node name="Menu" type="CenterContainer" parent="CanvasLayer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 7 )
@@ -135,25 +134,31 @@ __meta__ = {
 music_beat_path = NodePath("../../MusicBeat")
 
 [node name="Main" type="VBoxContainer" parent="CanvasLayer/Menu"]
-visible = false
-margin_left = 447.0
-margin_top = 246.0
-margin_right = 577.0
-margin_bottom = 354.0
+margin_left = 411.0
+margin_top = 214.0
+margin_right = 613.0
+margin_bottom = 386.0
 custom_constants/separation = 20
 
 [node name="Start" type="Button" parent="CanvasLayer/Menu/Main"]
-margin_right = 130.0
+margin_right = 202.0
 margin_bottom = 44.0
 text = "Start"
 
 [node name="Options" type="Button" parent="CanvasLayer/Menu/Main"]
 margin_top = 64.0
-margin_right = 130.0
+margin_right = 202.0
 margin_bottom = 108.0
 text = "Options"
 
+[node name="Scoreboard" type="Button" parent="CanvasLayer/Menu/Main"]
+margin_top = 128.0
+margin_right = 202.0
+margin_bottom = 172.0
+text = "Scoreboard"
+
 [node name="Options" type="VBoxContainer" parent="CanvasLayer/Menu"]
+visible = false
 margin_left = 262.0
 margin_top = 281.0
 margin_right = 762.0
@@ -182,6 +187,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 
 [node name="Scoreboard" type="CenterContainer" parent="CanvasLayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 7 )
@@ -253,6 +259,7 @@ text = "Back to menu"
 [connection signal="pressed" from="CanvasLayer/GameOver/VBoxContainer/Score" to="." method="open_scoreboard"]
 [connection signal="pressed" from="CanvasLayer/Menu/Main/Start" to="." method="reset"]
 [connection signal="pressed" from="CanvasLayer/Menu/Main/Options" to="CanvasLayer/Menu" method="_on_Options_pressed"]
+[connection signal="pressed" from="CanvasLayer/Menu/Main/Scoreboard" to="." method="open_scoreboard"]
 [connection signal="value_changed" from="CanvasLayer/Menu/Options/GridContainer/MasterVolume" to="CanvasLayer/Menu" method="_on_MasterVolume_value_changed"]
 [connection signal="request_completed" from="CanvasLayer/Scoreboard/ScoreRequest" to="CanvasLayer/Scoreboard" method="_on_ScoreRequest_request_completed"]
 [connection signal="pressed" from="CanvasLayer/Scoreboard/VBoxContainer/HBoxContainer/Submit" to="CanvasLayer/Scoreboard" method="_on_Submit_pressed"]

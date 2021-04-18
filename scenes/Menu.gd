@@ -27,7 +27,7 @@ func show_menu(menu):
 
 
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel") and visible:
 		show()
 
 

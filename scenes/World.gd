@@ -14,6 +14,7 @@ onready var game_over_sound := $GameOver
 onready var game_over_screen := $CanvasLayer/GameOver
 onready var score_screen := $CanvasLayer/ScoreContainer
 onready var menu := $CanvasLayer/Menu
+onready var score_board := $CanvasLayer/Scoreboard
 
 var apple
 var snake
@@ -32,6 +33,10 @@ func reset():
 	game_over = false
 	game_over_screen.hide()
 	menu.hide()
+	
+	beat_indicator.show()
+	score_screen.show()
+	score_board.submitted = false
 	
 	score_screen.reset()
 	music_beat.play()
@@ -82,17 +87,17 @@ func position_camera():
 	camera.look_at(center, Vector3.UP)
 
 
+func open_scoreboard():
+	game_over_screen.hide()
+	score_board.show()
+
+
 func open_menu():
 	game_over_screen.hide()
+	score_board.hide()
+	beat_indicator.hide()
+	score_screen.hide()
 	menu.show()
-
-
-func _unhandled_input(event):
-	if game_over:
-		if event.is_action_pressed("ui_accept"):
-			reset()
-		elif event.is_action_pressed("ui_cancel"):
-			open_menu()
 
 
 func _on_MusicBeat_beat():
@@ -105,3 +110,4 @@ func game_over():
 	game_over_sound.play()
 	game_over_screen.show()
 	game_over = true
+	beat_indicator.hide()

@@ -10,9 +10,6 @@ export var grid_size = Vector2(5, 5)
 # Saves what objects are on the grid
 var grid = []
 
-func _ready():
-	reset()
-
 func reset():
 	clear()
 	

@@ -41,7 +41,7 @@ func reset():
 	score_screen.reset()
 	music_beat.play()
 	grid.reset()
-	
+
 	position_camera()
 	spawn_snake()
 	spawn_apple()
@@ -102,7 +102,7 @@ func open_menu():
 
 
 func _on_MusicBeat_beat():
-	if not game_over:
+	if not game_over and snake:
 		snake.on_beat()
 
 

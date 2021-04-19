@@ -35,7 +35,7 @@ data = {
 ground_size = 1.25
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 10, 0 )
+transform = Transform( 0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 5.6814, 10, 3.38152 )
 projection = 1
 current = true
 size = 12.0

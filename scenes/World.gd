@@ -36,7 +36,6 @@ func reset():
 	
 	beat_indicator.show()
 	score_screen.show()
-	score_board.submitted = false
 	
 	score_screen.reset()
 	music_beat.play()
@@ -87,9 +86,12 @@ func position_camera():
 	camera.look_at(center, Vector3.UP)
 
 
-func open_scoreboard():
+func open_scoreboard(new_score: bool):
 	game_over_screen.hide()
-	score_board.show()
+	if new_score:
+		score_board.show_scoreboard(score_screen.score)
+	else:
+		score_board.show()
 	menu.hide()
 
 

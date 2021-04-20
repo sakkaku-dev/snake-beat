@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/game_over.wav" type="AudioStream" id=10]
 [ext_resource path="res://scenes/Menu.gd" type="Script" id=11]
 [ext_resource path="res://scenes/Scoreboard.gd" type="Script" id=12]
-[ext_resource path="res://scenes/TableContainer.gd" type="Script" id=13]
+[ext_resource path="res://shared/score/ScoreTable.tscn" type="PackedScene" id=13]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -124,6 +124,7 @@ margin_bottom = 172.0
 text = "Scoreboard"
 
 [node name="Menu" type="CenterContainer" parent="CanvasLayer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 7 )
@@ -187,7 +188,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 
 [node name="Scoreboard" type="CenterContainer" parent="CanvasLayer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 7 )
@@ -195,54 +195,26 @@ script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-score_container_path = NodePath("../ScoreContainer")
-
-[node name="ScoreRequest" type="HTTPRequest" parent="CanvasLayer/Scoreboard"]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Scoreboard"]
 margin_left = 212.0
-margin_top = 190.0
+margin_top = 171.0
 margin_right = 812.0
-margin_bottom = 410.0
+margin_bottom = 429.0
 rect_min_size = Vector2( 600, 0 )
 custom_constants/separation = 30
 
-[node name="Label" type="Label" parent="CanvasLayer/Scoreboard/VBoxContainer"]
+[node name="ScoreTable" parent="CanvasLayer/Scoreboard/VBoxContainer" instance=ExtResource( 13 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 600.0
-margin_bottom = 38.0
-text = "SCOREboard: TOP 5"
-align = 1
-
-[node name="ScoreTable" type="GridContainer" parent="CanvasLayer/Scoreboard/VBoxContainer"]
-margin_top = 68.0
-margin_right = 600.0
-margin_bottom = 68.0
-columns = 3
-script = ExtResource( 13 )
-headers = [ "Score", "User", "Time" ]
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Scoreboard/VBoxContainer"]
-margin_top = 98.0
-margin_right = 600.0
-margin_bottom = 146.0
-custom_constants/separation = 20
-
-[node name="Username" type="LineEdit" parent="CanvasLayer/Scoreboard/VBoxContainer/HBoxContainer"]
-margin_right = 363.0
-margin_bottom = 48.0
-size_flags_horizontal = 3
-placeholder_text = "Name"
-
-[node name="Submit" type="Button" parent="CanvasLayer/Scoreboard/VBoxContainer/HBoxContainer"]
-margin_left = 383.0
-margin_right = 600.0
-margin_bottom = 48.0
-text = "Submit score"
+margin_bottom = 184.0
+game_id = "SNAKE_BEAT"
 
 [node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Scoreboard/VBoxContainer"]
-margin_top = 176.0
+margin_top = 214.0
 margin_right = 600.0
-margin_bottom = 220.0
+margin_bottom = 258.0
 
 [node name="Button" type="Button" parent="CanvasLayer/Scoreboard/VBoxContainer/CenterContainer"]
 margin_left = 191.0
@@ -256,11 +228,9 @@ text = "Back to menu"
 [connection signal="moving_into_occupied" from="Grid" to="." method="game_over"]
 [connection signal="pressed" from="CanvasLayer/GameOver/VBoxContainer/Restart" to="." method="reset"]
 [connection signal="pressed" from="CanvasLayer/GameOver/VBoxContainer/BackToMenu" to="." method="open_menu"]
-[connection signal="pressed" from="CanvasLayer/GameOver/VBoxContainer/Score" to="." method="open_scoreboard"]
+[connection signal="pressed" from="CanvasLayer/GameOver/VBoxContainer/Score" to="." method="open_scoreboard" binds= [ true ]]
 [connection signal="pressed" from="CanvasLayer/Menu/Main/Start" to="." method="reset"]
 [connection signal="pressed" from="CanvasLayer/Menu/Main/Options" to="CanvasLayer/Menu" method="_on_Options_pressed"]
-[connection signal="pressed" from="CanvasLayer/Menu/Main/Scoreboard" to="." method="open_scoreboard"]
+[connection signal="pressed" from="CanvasLayer/Menu/Main/Scoreboard" to="." method="open_scoreboard" binds= [ false ]]
 [connection signal="value_changed" from="CanvasLayer/Menu/Options/GridContainer/MasterVolume" to="CanvasLayer/Menu" method="_on_MasterVolume_value_changed"]
-[connection signal="request_completed" from="CanvasLayer/Scoreboard/ScoreRequest" to="CanvasLayer/Scoreboard" method="_on_ScoreRequest_request_completed"]
-[connection signal="pressed" from="CanvasLayer/Scoreboard/VBoxContainer/HBoxContainer/Submit" to="CanvasLayer/Scoreboard" method="_on_Submit_pressed"]
 [connection signal="pressed" from="CanvasLayer/Scoreboard/VBoxContainer/CenterContainer/Button" to="." method="open_menu"]

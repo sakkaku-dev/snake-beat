@@ -1,5 +1,7 @@
 extends GridContainer
 
+class_name TableContainer
+
 export(Array, String) var headers = []
 
 var data = []
